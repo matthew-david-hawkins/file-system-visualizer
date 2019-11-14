@@ -1,19 +1,43 @@
-margin = ({top: 10, right: 120, bottom: 10, left: 40}); // set margins
+margin = ({top: 10, right: 120, bottom: 10, left: 150}); // set margins
 var width = 1200 - margin.left - margin.right; // set chart width
-dx = 10; // 
+dx = 15; // 
 dy = width / 6;
 // d3 = require("d3@5");
+
+// Select the button
+var button = d3.select("#button");
+
+button.on("click", function() {
+
+  // Select the input element and get the raw HTML node
+  var inputElement = d3.select("#example-form-input");
+
+  // Get the value property of the input element
+  var inputValue = inputElement.property("value");
+
+  console.log(inputValue);
+
+  d3.json("/assets/js/model_data.json").then(function(data){
+
+    console.log(data);
+    var mysvg = chart(data)
+    console.log(mysvg)
+    d3.select("#tree").node().append(mysvg)
+  }); // Load data in json form
+
+  // Set the span tag in the h1 element to the text
+  // that was entered in the form
+  d3.select("h1>span").text(inputValue);
+});
 
 diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
 tree = d3.tree().nodeSize([dx, dy]);
 
 function chart(data){
   const root = d3.hierarchy(data);
-  console.log(root)
   root.x0 = dy / 2;
   root.y0 = 0;
   root.descendants().forEach((d, i) => {
-    console.log(d)
     d.id = i;
     d._children = d.children;
     if (d.depth && d.data.name.length !== 7) d.children = null;
@@ -131,13 +155,7 @@ function chart(data){
   return svg.node();
 } 
 
-d3.json("/assets/js/data.json").then(function(data){
 
-  console.log(data);
-  var mysvg = chart(data)
-  console.log(mysvg)
-  d3.select("#tree").node().append(mysvg)
-}); // Load data in json form
 
 
 
