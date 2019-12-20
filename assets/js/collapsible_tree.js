@@ -17,7 +17,7 @@ button.on("click", function() {
 
   console.log(inputValue);
 
-  d3.json("/assets/js/model_data.json").then(function(data){
+  d3.json("/s/model_data.json").then(function(data){
 
     console.log(data);
     var mysvg = chart(data)
